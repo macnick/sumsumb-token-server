@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SumSub Token Demo</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; }
+    button { padding: 0.6rem 1rem; margin-right: 0.5rem; }
+    code { background: #f4f4f4; padding: 2px 4px; border-radius: 4px; }
+    #output { white-space: pre-wrap; background:#111; color:#0f0; padding:1rem; border-radius:6px; margin-top:1rem; }
+    .row { margin-bottom: 1rem; }
+    input { padding:0.4rem; }
+  </style>
+</head>
+<body>
+  <h1>SumSub Access Token Demo</h1>
+  <p>This page calls your backend <code>/api/token/:level</code> endpoint which signs the request to SumSub securely.</p>
+
+  <div class="row">
+    <label>Level Name: <input id="level" value="basic-kyc-level" /></label>
+    <label>TTL (secs): <input id="ttl" type="number" value="600" style="width:90px" /></label>
+    <button id="btn">Get Token</button>
+  </div>
+
+  <div id="output">Waiting...</div>
+
+  <script>
+    const btn = document.getElementById('btn');
+    const out = document.getElementById('output');
+
+    async function getToken() {
+      out.textContent = 'Requesting token...';
+      const level = document.getElementById('level').value.trim();
+      const ttl = parseInt(document.getElementById('ttl').value, 10) || 600;
+      try {
+        const res = await fetch(`/api/token/${encodeURIComponent(level)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ttlInSecs: ttl })
+        });
+        const data = await res.json();
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        out.textContent = 'Error: ' + e.message;
+      }
+    }
+
+    btn.addEventListener('click', getToken);
+  </script>
+</body>
+</html>
