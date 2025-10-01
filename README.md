@@ -113,11 +113,5 @@ Current configuration intentionally sets permissive CORS (`*`). For production y
 - Add request logging + correlation IDs.
 - Monitor token issuance counts.
 
-## 9. Legacy Example Script
-`AppTokenJsExample.js` remains for reference to broader workflow (create applicant, upload document, status, token). It is not used by the server. Run manually if needed:
-```bash
-node AppTokenJsExample.js
-```
-
 ---
 Maintained as a minimal reference implementation—extend according to your product’s KYC flow requirements.
